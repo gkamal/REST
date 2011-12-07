@@ -1,10 +1,11 @@
-package org.rest.common.dao;
+package org.rest.common.dao.hibernate;
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.classic.Session;
+import org.rest.common.dao.ICommonOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,13 +14,22 @@ import com.google.common.base.Preconditions;
 
 @SuppressWarnings( "unchecked" )
 @Transactional( propagation = Propagation.SUPPORTS )
-public abstract class AbstractDAO< T extends Serializable > implements ICommonOperations< T >{
-	private final Class< T > clazz;
+public abstract class AbstractHibernateDAO< T extends Serializable > implements ICommonOperations< T >{
+	private Class< T > clazz;
 	
 	@Autowired
 	SessionFactory sessionFactory;
 	
-	public AbstractDAO( final Class< T > clazzToSet ){
+	public AbstractHibernateDAO(){
+		super();
+	}
+	public AbstractHibernateDAO( final Class< T > clazzToSet ){
+		this.clazz = clazzToSet;
+	}
+	
+	//
+	
+	public final void setClazz( final Class< T > clazzToSet ){
 		Preconditions.checkNotNull( clazzToSet );
 		this.clazz = clazzToSet;
 	}
